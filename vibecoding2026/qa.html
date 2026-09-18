@@ -1,0 +1,1856 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Q&A | FDA Programming Club</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        :root {
+            --bg: #070b18;
+            --bg2: #0b1224;
+
+            --text: #f5f7ff;
+            --muted: #9da7c0;
+
+            --primary: #6f5cff;
+            --primary-light: #a99cff;
+
+            --border: rgba(255,255,255,0.10);
+
+            --card: rgba(255,255,255,0.045);
+            --card-hover: rgba(255,255,255,0.07);
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family:
+                Inter,
+                -apple-system,
+                BlinkMacSystemFont,
+                "Segoe UI",
+                sans-serif;
+
+            color: var(--text);
+
+            min-height: 100vh;
+
+            background:
+                radial-gradient(
+                    circle at 10% 10%,
+                    rgba(105, 82, 255, 0.17),
+                    transparent 30%
+                ),
+                radial-gradient(
+                    circle at 90% 20%,
+                    rgba(0, 174, 255, 0.10),
+                    transparent 30%
+                ),
+                linear-gradient(
+                    180deg,
+                    #070b18 0%,
+                    #080d1c 60%,
+                    #060a15 100%
+                );
+
+            overflow-x: hidden;
+        }
+
+
+        /* =====================================================
+           BACKGROUND
+        ===================================================== */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            pointer-events: none;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .glow {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(100px);
+            opacity: .22;
+            animation: floating 12s ease-in-out infinite;
+        }
+
+        .glow-1 {
+            width: 350px;
+            height: 350px;
+            background: #604bff;
+            top: -180px;
+            left: -120px;
+        }
+
+        .glow-2 {
+            width: 300px;
+            height: 300px;
+            background: #008cff;
+            right: -130px;
+            top: 35%;
+            animation-delay: -4s;
+        }
+
+        .glow-3 {
+            width: 250px;
+            height: 250px;
+            background: #914cff;
+            left: 35%;
+            bottom: -160px;
+            animation-delay: -8s;
+        }
+
+        @keyframes floating {
+
+            0%, 100% {
+                transform: translate(0, 0);
+            }
+
+            50% {
+                transform: translate(35px, -25px);
+            }
+        }
+
+
+        /* =====================================================
+           NAVBAR
+        ===================================================== */
+
+        nav {
+            width: min(1120px, calc(100% - 40px));
+
+            margin: 22px auto 0;
+
+            padding: 14px 18px;
+
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            background: rgba(8, 14, 31, .72);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            backdrop-filter: blur(18px);
+
+            position: relative;
+            z-index: 10;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 11px;
+
+            font-size: 14px;
+            font-weight: 700;
+        }
+
+        .logo-icon {
+            width: 38px;
+            height: 38px;
+
+            display: grid;
+            place-items: center;
+
+            border-radius: 11px;
+
+            background:
+                linear-gradient(
+                    135deg,
+                    #705cff,
+                    #438cff
+                );
+
+            font-size: 14px;
+            font-weight: 800;
+
+            box-shadow:
+                0 0 25px rgba(111,92,255,.3);
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 5px;
+        }
+
+        .nav-links a {
+            color: var(--muted);
+
+            font-size: 14px;
+
+            padding: 9px 14px;
+
+            border-radius: 10px;
+
+            transition: .25s;
+        }
+
+        .nav-links a:hover {
+            color: white;
+            background: rgba(255,255,255,.06);
+        }
+
+
+        /* =====================================================
+           HERO
+        ===================================================== */
+
+        .hero {
+            width: min(900px, calc(100% - 40px));
+
+            margin: 100px auto 55px;
+
+            text-align: center;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+
+            padding: 8px 14px;
+
+            border-radius: 999px;
+
+            border: 1px solid rgba(120,100,255,.28);
+
+            background: rgba(100,80,255,.08);
+
+            color: #c6beff;
+
+            font-size: 12px;
+
+            margin-bottom: 25px;
+
+            animation: appear .7s ease;
+        }
+
+        .dot {
+            width: 7px;
+            height: 7px;
+
+            border-radius: 50%;
+
+            background: #69f6a1;
+
+            box-shadow: 0 0 10px #69f6a1;
+        }
+
+        .hero h1 {
+            font-size: clamp(45px, 7vw, 76px);
+
+            line-height: 1.03;
+
+            letter-spacing: -4px;
+
+            font-weight: 900;
+
+            animation: appear .7s .1s ease both;
+        }
+
+        .gradient {
+            background:
+                linear-gradient(
+                    100deg,
+                    #ffffff 10%,
+                    #a69aff 50%,
+                    #70d9ff 100%
+                );
+
+            -webkit-background-clip: text;
+            background-clip: text;
+
+            color: transparent;
+        }
+
+        .hero-description {
+            max-width: 650px;
+
+            margin: 24px auto 0;
+
+            color: var(--muted);
+
+            font-size: 16px;
+
+            line-height: 1.7;
+
+            animation: appear .7s .2s ease both;
+        }
+
+        @keyframes appear {
+
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+
+        /* =====================================================
+           SEARCH
+        ===================================================== */
+
+        .search-wrapper {
+            width: min(760px, calc(100% - 40px));
+
+            margin: 0 auto 80px;
+
+            animation: appear .7s .3s ease both;
+        }
+
+        .search-box {
+            display: flex;
+            align-items: center;
+
+            gap: 14px;
+
+            padding: 7px 9px 7px 20px;
+
+            border-radius: 18px;
+
+            background:
+                rgba(255,255,255,.055);
+
+            border: 1px solid rgba(255,255,255,.11);
+
+            backdrop-filter: blur(20px);
+
+            transition: .3s;
+        }
+
+        .search-box:focus-within {
+            border-color: rgba(116,96,255,.65);
+
+            box-shadow:
+                0 0 0 4px rgba(111,92,255,.08),
+                0 20px 50px rgba(0,0,0,.18);
+        }
+
+        .search-icon {
+            font-size: 20px;
+            opacity: .7;
+        }
+
+        #search {
+            flex: 1;
+
+            border: none;
+            outline: none;
+
+            background: transparent;
+
+            color: white;
+
+            font-size: 15px;
+
+            padding: 13px 0;
+        }
+
+        #search::placeholder {
+            color: #747e99;
+        }
+
+        .shortcut {
+            padding: 7px 10px;
+
+            border: 1px solid rgba(255,255,255,.08);
+
+            border-radius: 8px;
+
+            color: #707990;
+
+            font-size: 11px;
+        }
+
+
+        /* =====================================================
+           MAIN
+        ===================================================== */
+
+        main {
+            width: min(900px, calc(100% - 40px));
+
+            margin: auto;
+
+            padding-bottom: 100px;
+        }
+
+        .heading {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: end;
+
+            margin-bottom: 24px;
+        }
+
+        .heading h2 {
+            font-size: 25px;
+
+            letter-spacing: -.8px;
+        }
+
+        .heading p {
+            color: var(--muted);
+
+            font-size: 13px;
+        }
+
+
+        /* =====================================================
+           FAQ
+        ===================================================== */
+
+        .faq-list {
+            display: flex;
+
+            flex-direction: column;
+
+            gap: 12px;
+        }
+
+        .faq {
+            background: var(--card);
+
+            border: 1px solid var(--border);
+
+            border-radius: 18px;
+
+            overflow: hidden;
+
+            transition:
+                background .3s,
+                border-color .3s,
+                transform .3s;
+        }
+
+        .faq:hover {
+            background: var(--card-hover);
+
+            border-color:
+                rgba(120,100,255,.25);
+
+            transform: translateY(-2px);
+        }
+
+        .question {
+            width: 100%;
+
+            padding: 21px 22px;
+
+            display: flex;
+
+            align-items: center;
+
+            justify-content: space-between;
+
+            gap: 20px;
+
+            border: none;
+
+            background: none;
+
+            color: white;
+
+            text-align: left;
+
+            cursor: pointer;
+        }
+
+        .question-content {
+            display: flex;
+
+            align-items: center;
+
+            gap: 15px;
+        }
+
+        .number {
+            flex-shrink: 0;
+
+            width: 36px;
+            height: 36px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 11px;
+
+            background:
+                rgba(111,92,255,.11);
+
+            border: 1px solid
+                rgba(111,92,255,.13);
+
+            color: #a79aff;
+
+            font-size: 12px;
+
+            font-weight: 700;
+        }
+
+        .question-text {
+            font-size: 15px;
+
+            font-weight: 600;
+
+            line-height: 1.5;
+        }
+
+        .arrow {
+            flex-shrink: 0;
+
+            width: 30px;
+            height: 30px;
+
+            display: grid;
+
+            place-items: center;
+
+            border-radius: 50%;
+
+            background:
+                rgba(255,255,255,.045);
+
+            color: #8992aa;
+
+            transition: transform .3s;
+        }
+
+        .faq.open .arrow {
+            transform: rotate(180deg);
+        }
+
+
+        /* =====================================================
+           ANSWER
+        ===================================================== */
+
+        .answer {
+            max-height: 0;
+
+            overflow: hidden;
+
+            transition:
+                max-height .45s ease;
+        }
+
+        .answer-inner {
+            margin: 0 22px 22px 73px;
+
+            padding: 22px 25px;
+
+            border-left:
+                2px solid rgba(111,92,255,.55);
+
+            border-radius: 0 13px 13px 0;
+
+            background:
+                rgba(111,92,255,.045);
+
+            color: #b6bfd4;
+
+            font-size: 14px;
+
+            line-height: 1.85;
+        }
+
+        .answer-inner strong {
+            color: white;
+        }
+
+        .answer-inner p {
+            margin-bottom: 12px;
+        }
+
+        .answer-inner p:last-child {
+            margin-bottom: 0;
+        }
+
+        .answer-inner ul {
+            margin:
+                12px 0 12px 20px;
+        }
+
+        .answer-inner li {
+            margin-bottom: 6px;
+        }
+
+        .highlight {
+            color: #c0b7ff;
+            font-weight: 600;
+        }
+
+
+        /* =====================================================
+           NO RESULT
+        ===================================================== */
+
+        .no-result {
+            display: none;
+
+            padding: 60px 20px;
+
+            text-align: center;
+
+            color: var(--muted);
+        }
+
+        .no-result-icon {
+            font-size: 42px;
+
+            margin-bottom: 12px;
+        }
+
+        .no-result h3 {
+            color: white;
+
+            margin-bottom: 7px;
+        }
+
+
+        /* =====================================================
+           FOOTER
+        ===================================================== */
+
+        footer {
+            padding: 35px 20px;
+
+            border-top:
+                1px solid var(--border);
+
+            text-align: center;
+
+            color: #68728c;
+
+            font-size: 12px;
+        }
+
+        footer strong {
+            color: #aeb7ce;
+        }
+
+
+        /* =====================================================
+           MOBILE
+        ===================================================== */
+
+        @media (max-width: 700px) {
+
+            nav {
+                width: calc(100% - 24px);
+
+                margin-top: 12px;
+            }
+
+            .nav-links {
+                display: none;
+            }
+
+            .hero {
+                margin-top: 70px;
+            }
+
+            .hero h1 {
+                letter-spacing: -2.5px;
+            }
+
+            .hero-description {
+                font-size: 14px;
+            }
+
+            main {
+                width: calc(100% - 24px);
+            }
+
+            .search-wrapper {
+                width: calc(100% - 24px);
+
+                margin-bottom: 60px;
+            }
+
+            .heading {
+                align-items: flex-start;
+
+                flex-direction: column;
+
+                gap: 6px;
+            }
+
+            .shortcut {
+                display: none;
+            }
+
+            .question {
+                padding: 18px;
+            }
+
+            .question-content {
+                gap: 11px;
+            }
+
+            .question-text {
+                font-size: 14px;
+            }
+
+            .number {
+                width: 32px;
+                height: 32px;
+            }
+
+            .answer-inner {
+                margin:
+                    0 18px 18px 18px;
+
+                padding:
+                    18px 18px;
+            }
+        }
+
+
+        /* =====================================================
+           SCROLLBAR
+        ===================================================== */
+
+        ::-webkit-scrollbar {
+            width: 7px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #070b18;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: #303650;
+
+            border-radius: 20px;
+        }
+    </style>
+</head>
+
+
+<body>
+
+
+<!-- =========================================================
+     BACKGROUND
+========================================================= -->
+
+<div class="background">
+
+    <div class="glow glow-1"></div>
+
+    <div class="glow glow-2"></div>
+
+    <div class="glow glow-3"></div>
+
+</div>
+
+
+<!-- =========================================================
+     NAVBAR
+========================================================= -->
+
+<nav>
+
+    <a href="#" class="logo">
+
+        <div class="logo-icon">
+            &lt;/&gt;
+        </div>
+
+        <span>
+            FDA Programming Club
+        </span>
+
+    </a>
+
+
+    <div class="nav-links">
+
+        <a href="#questions">
+            Q&A
+        </a>
+
+        <a href="#footer">
+            Về CLB
+        </a>
+
+    </div>
+
+</nav>
+
+
+<!-- =========================================================
+     HERO
+========================================================= -->
+
+<section class="hero">
+
+    <div class="hero-badge">
+
+        <span class="dot"></span>
+
+        FDA Programming Club
+
+    </div>
+
+
+    <h1>
+
+        Những điều bạn
+        <br>
+
+        <span class="gradient">
+            muốn biết.
+
+        </span>
+
+    </h1>
+
+
+    <p class="hero-description">
+
+        Tổng hợp những câu hỏi thường gặp từ các bạn sinh viên.
+        Tìm câu hỏi bạn quan tâm và khám phá câu trả lời từ
+        những người đã đi trước.
+
+    </p>
+
+</section>
+
+
+<!-- =========================================================
+     SEARCH
+========================================================= -->
+
+<div class="search-wrapper">
+
+    <div class="search-box">
+
+        <span class="search-icon">
+            🔍
+        </span>
+
+        <input
+            id="search"
+            type="text"
+            placeholder="Tìm kiếm câu hỏi..."
+            autocomplete="off"
+        >
+
+        <span class="shortcut">
+            Ctrl K
+        </span>
+
+    </div>
+
+</div>
+
+
+<!-- =========================================================
+     QUESTIONS
+========================================================= -->
+
+<main id="questions">
+
+
+    <div class="heading">
+
+        <h2>
+            Câu hỏi thường gặp
+        </h2>
+
+        <p id="result">
+            12 câu hỏi
+        </p>
+
+    </div>
+
+
+    <div class="faq-list" id="faqList">
+
+
+        <!-- =================================================
+             QUESTION 01
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Học lập trình từ con số 0 có tham gia được không"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        01
+                    </span>
+
+                    <span class="question-text">
+                        Học lập trình từ con số 0 có tham gia được không?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        <strong>
+                            Hoàn toàn có thể.
+                        </strong>
+                    </p>
+
+                    <p>
+                        Bạn không cần phải biết lập trình trước
+                        khi tham gia. Điều quan trọng hơn là
+                        bạn có <span class="highlight">
+                        mong muốn học hỏi và sẵn sàng thực hành.
+                        </span>
+                    </p>
+
+                    <p>
+                        Khi mới bắt đầu, bạn có thể học từ những
+                        kiến thức rất cơ bản như biến, kiểu dữ liệu,
+                        câu lệnh điều kiện, vòng lặp và hàm.
+                    </p>
+
+                    <p>
+                        Đừng quá lo lắng nếu những khái niệm đầu tiên
+                        có vẻ khó. Gần như ai học lập trình cũng từng
+                        trải qua giai đoạn này.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 02
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Nên học C++ hay Python trước"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        02
+                    </span>
+
+                    <span class="question-text">
+                        Nên học C++ hay Python trước?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Cả <strong>C++</strong> và
+                        <strong>Python</strong> đều là những
+                        lựa chọn tốt.
+                    </p>
+
+                    <p>
+                        Nếu bạn muốn xây dựng nền tảng tốt về
+                        thuật toán, cấu trúc dữ liệu và tư duy
+                        lập trình, C++ là một lựa chọn phù hợp.
+                    </p>
+
+                    <p>
+                        Nếu bạn quan tâm đến Data Science,
+                        Machine Learning, AI hoặc Automation,
+                        Python sẽ đặc biệt hữu ích.
+                    </p>
+
+                    <p>
+                        Quan trọng nhất là
+                        <span class="highlight">
+                        chọn một ngôn ngữ và học đủ sâu
+                        </span>
+                        thay vì cố gắng học quá nhiều ngôn ngữ
+                        cùng lúc.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 03
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Đại học có khó hơn cấp 3 không"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        03
+                    </span>
+
+                    <span class="question-text">
+                        Đại học có khó hơn cấp 3 nhiều không?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Không nhất thiết là khó hơn, nhưng
+                        <strong>cách học sẽ khác rất nhiều.</strong>
+                    </p>
+
+                    <p>
+                        Ở đại học, bạn sẽ có nhiều sự tự do hơn.
+                        Tuy nhiên, điều đó cũng đồng nghĩa với việc
+                        bạn phải chủ động hơn.
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Tự quản lý thời gian.
+                        </li>
+
+                        <li>
+                            Tự tìm hiểu những kiến thức chưa biết.
+                        </li>
+
+                        <li>
+                            Chủ động hỏi giảng viên và bạn bè.
+                        </li>
+
+                        <li>
+                            Tự xây dựng kỹ năng ngoài chương trình học.
+                        </li>
+
+                    </ul>
+
+                    <p>
+                        Vì vậy, kỹ năng
+                        <span class="highlight">
+                        quản lý thời gian và tự học
+                        </span>
+                        rất quan trọng.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 04
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="FDA Programming Club hoạt động những gì"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        04
+                    </span>
+
+                    <span class="question-text">
+                        FDA Programming Club thường tổ chức những hoạt động gì?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        FDA Programming Club hướng đến việc xây dựng
+                        một môi trường để các bạn sinh viên
+                        <strong>cùng học tập, thực hành và phát triển.</strong>
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Các buổi học và chia sẻ kiến thức.
+                        </li>
+
+                        <li>
+                            Offline hàng tháng.
+                        </li>
+
+                        <li>
+                            Talkshow và các chương trình định hướng.
+                        </li>
+
+                        <li>
+                            Các khóa học về lập trình.
+                        </li>
+
+                        <li>
+                            Hoạt động dự án và xây dựng sản phẩm.
+                        </li>
+
+                    </ul>
+
+                    <p>
+                        Bạn không nhất thiết phải giỏi lập trình
+                        mới có thể tham gia.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 05
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Tham gia câu lạc bộ có mất phí không"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        05
+                    </span>
+
+                    <span class="question-text">
+                        Tham gia câu lạc bộ có mất phí không?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Việc tham gia câu lạc bộ không đặt nặng
+                        vấn đề phí thành viên.
+                    </p>
+
+                    <p>
+                        Một số hoạt động cụ thể có thể phát sinh
+                        chi phí tổ chức hoặc chi phí cá nhân.
+                        Nếu có, thông tin sẽ được thông báo
+                        trước cho các thành viên.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 06
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Có nên tham gia nhiều câu lạc bộ không"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        06
+                    </span>
+
+                    <span class="question-text">
+                        Có nên tham gia nhiều câu lạc bộ cùng lúc không?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Bạn hoàn toàn có thể tham gia nhiều CLB,
+                        nhưng không nên tham gia quá nhiều chỉ để
+                        có thêm hoạt động trong CV.
+                    </p>
+
+                    <p>
+                        Hãy lựa chọn những hoạt động thực sự phù hợp
+                        với mục tiêu của mình.
+                    </p>
+
+                    <p>
+                        Đặc biệt trong năm nhất, hãy dành thời gian
+                        để <span class="highlight">
+                        khám phá bản thân và thử nhiều thứ khác nhau
+                        </span>
+                        trước khi quyết định hướng đi lâu dài.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 07
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Làm sao cân bằng học tập và hoạt động câu lạc bộ"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        07
+                    </span>
+
+                    <span class="question-text">
+                        Làm sao để cân bằng việc học và hoạt động CLB?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Hãy coi <strong>việc học là nền tảng</strong>
+                        và hoạt động CLB là môi trường để bạn
+                        phát triển thêm những kỹ năng khác.
+                    </p>
+
+                    <p>
+                        Một cách đơn giản là lập kế hoạch theo tuần,
+                        xác định trước những khoảng thời gian dành
+                        cho việc học, nghỉ ngơi và hoạt động.
+                    </p>
+
+                    <p>
+                        Khi có bài kiểm tra hoặc deadline quan trọng,
+                        hãy ưu tiên việc học trước.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 08
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Học lập trình mất bao lâu"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        08
+                    </span>
+
+                    <span class="question-text">
+                        Học lập trình mất bao lâu để có thể làm được bài?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Không có một mốc thời gian cố định.
+                    </p>
+
+                    <p>
+                        Nếu bạn học đều đặn khoảng
+                        <strong>30–60 phút mỗi ngày</strong>,
+                        bạn có thể dần giải được những bài lập trình
+                        cơ bản.
+                    </p>
+
+                    <p>
+                        Điều quan trọng không phải là học thật nhanh
+                        mà là <span class="highlight">
+                        duy trì việc luyện tập trong thời gian dài.
+                        </span>
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 09
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Làm thế nào để tham gia FDA Programming Club"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        09
+                    </span>
+
+                    <span class="question-text">
+                        Làm thế nào để tham gia FDA Programming Club?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Bạn có thể theo dõi các thông báo tuyển thành viên,
+                        khóa học và hoạt động của CLB để đăng ký khi
+                        chương trình được mở.
+                    </p>
+
+                    <p>
+                        Hãy theo dõi các kênh truyền thông chính thức
+                        của CLB để không bỏ lỡ thông tin.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 10
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Có cần laptop mạnh để học lập trình không"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        10
+                    </span>
+
+                    <span class="question-text">
+                        Có cần laptop mạnh để học lập trình không?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Với lập trình cơ bản,
+                        <strong>không cần một chiếc laptop quá mạnh.</strong>
+                    </p>
+
+                    <p>
+                        Một chiếc máy có thể chạy tốt VS Code,
+                        compiler và trình duyệt là đủ để bắt đầu.
+                    </p>
+
+                    <p>
+                        Khi học sâu hơn về AI, Machine Learning
+                        hoặc xử lý dữ liệu lớn, nhu cầu về phần cứng
+                        mới tăng lên.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 11
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Nên ưu tiên GPA hay kỹ năng"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        11
+                    </span>
+
+                    <span class="question-text">
+                        Nên ưu tiên GPA hay kỹ năng?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Đừng xem GPA và kỹ năng là hai thứ
+                        loại trừ nhau.
+                    </p>
+
+                    <p>
+                        <strong>
+                            GPA giúp bạn xây dựng nền tảng học thuật,
+                            còn kỹ năng giúp bạn biến kiến thức
+                            thành sản phẩm.
+                        </strong>
+                    </p>
+
+                    <p>
+                        Hãy cố gắng duy trì kết quả học tập ổn định
+                        đồng thời dành thời gian làm project,
+                        thực hành và tham gia các hoạt động phù hợp.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+        <!-- =================================================
+             QUESTION 12
+        ================================================== -->
+
+        <article
+            class="faq"
+            data-question="Không biết nên học gì thì bắt đầu từ đâu"
+        >
+
+            <button class="question">
+
+                <div class="question-content">
+
+                    <span class="number">
+                        12
+                    </span>
+
+                    <span class="question-text">
+                        Nếu chưa biết mình nên học gì thì phải bắt đầu từ đâu?
+                    </span>
+
+                </div>
+
+                <span class="arrow">
+                    ↓
+                </span>
+
+            </button>
+
+
+            <div class="answer">
+
+                <div class="answer-inner">
+
+                    <p>
+                        Đừng cố gắng học tất cả mọi thứ cùng lúc.
+                    </p>
+
+                    <p>
+                        Hãy bắt đầu bằng một mục tiêu nhỏ:
+                    </p>
+
+                    <ul>
+
+                        <li>
+                            Học một ngôn ngữ lập trình.
+                        </li>
+
+                        <li>
+                            Làm một project nhỏ.
+                        </li>
+
+                        <li>
+                            Tham gia một hoạt động.
+                        </li>
+
+                        <li>
+                            Tìm một người có kinh nghiệm để hỏi.
+                        </li>
+
+                    </ul>
+
+                    <p>
+                        Sau một thời gian trải nghiệm,
+                        bạn sẽ hiểu rõ hơn mình thích gì
+                        và muốn phát triển theo hướng nào.
+                    </p>
+
+                </div>
+
+            </div>
+
+        </article>
+
+
+    </div>
+
+
+    <!-- NO RESULT -->
+
+    <div class="no-result" id="noResult">
+
+        <div class="no-result-icon">
+            🔎
+        </div>
+
+        <h3>
+            Không tìm thấy câu hỏi
+        </h3>
+
+        <p>
+            Thử tìm kiếm bằng một từ khóa khác nhé.
+        </p>
+
+    </div>
+
+</main>
+
+
+<!-- =========================================================
+     FOOTER
+========================================================= -->
+
+<footer id="footer">
+
+    <p>
+        Made with curiosity by
+        <strong>FDA Programming Club</strong>
+    </p>
+
+    <p style="margin-top: 7px;">
+        Learn · Build · Share · Grow
+    </p>
+
+</footer>
+
+
+<script>
+
+    /* =========================================================
+       ACCORDION
+    ========================================================= */
+
+    const questions =
+        document.querySelectorAll(".question");
+
+    questions.forEach(button => {
+
+        button.addEventListener("click", () => {
+
+            const faq =
+                button.closest(".faq");
+
+            const wasOpen =
+                faq.classList.contains("open");
+
+
+            // Đóng tất cả câu hỏi khác
+            document
+                .querySelectorAll(".faq.open")
+                .forEach(item => {
+
+                    item.classList.remove("open");
+
+                    item.querySelector(".answer")
+                        .style.maxHeight = null;
+
+                });
+
+
+            // Nếu câu hỏi chưa mở thì mở nó
+            if (!wasOpen) {
+
+                faq.classList.add("open");
+
+                const answer =
+                    faq.querySelector(".answer");
+
+                answer.style.maxHeight =
+                    answer.scrollHeight + "px";
+
+            }
+
+        });
+
+    });
+
+
+    /* =========================================================
+       SEARCH
+    ========================================================= */
+
+    const search =
+        document.getElementById("search");
+
+    const faqs =
+        document.querySelectorAll(".faq");
+
+    const result =
+        document.getElementById("result");
+
+    const noResult =
+        document.getElementById("noResult");
+
+
+    function searchFAQs() {
+
+        const keyword =
+            search.value
+                .toLowerCase()
+                .trim();
+
+        let count = 0;
+
+
+        faqs.forEach(faq => {
+
+            const question =
+                faq.dataset.question
+                    .toLowerCase();
+
+            if (question.includes(keyword)) {
+
+                faq.style.display = "block";
+
+                count++;
+
+            } else {
+
+                faq.style.display = "none";
+
+                faq.classList.remove("open");
+
+                faq.querySelector(".answer")
+                    .style.maxHeight = null;
+
+            }
+
+        });
+
+
+        if (count === 0) {
+
+            noResult.style.display = "block";
+
+            result.textContent =
+                "Không có kết quả";
+
+        } else {
+
+            noResult.style.display = "none";
+
+            result.textContent =
+                `${count} câu hỏi`;
+
+        }
+
+    }
+
+
+    search.addEventListener(
+        "input",
+        searchFAQs
+    );
+
+
+    /* =========================================================
+       CTRL + K
+    ========================================================= */
+
+    document.addEventListener("keydown", event => {
+
+        if (
+            (event.ctrlKey || event.metaKey) &&
+            event.key.toLowerCase() === "k"
+        ) {
+
+            event.preventDefault();
+
+            search.focus();
+
+        }
+
+    });
+
+
+</script>
+
+</body>
+</html>
