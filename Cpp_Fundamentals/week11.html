@@ -38,7 +38,7 @@ th,td{border:1px solid var(--line);padding:4px 12px;text-align:left}
 <main>
 <h1>C++ Fundamentals: Exercises</h1>
 <p class="sub">Five exercises. Every code block has a Copy button. Do not modify <code>main()</code>.</p>
-<nav><a href="#p1">1. Character Classifier</a><a href="#p2">2. Trapezoid Area</a><a href="#p3">3. Update Balance</a><a href="#p4">4. Valid Password</a><a href="#p5">5. RSA Lite</a></nav>
+<nav><a href="#p1">1. Character Classifier</a><a href="#p2">2. Trapezoid Area</a><a href="#p3">3. Update Balance</a><a href="#p4">4. Global String Editor</a><a href="#p5">5. RSA Lite</a></nav>
 
 <!-- ===================== PROBLEM 1 ===================== -->
 <article id="p1">
@@ -250,41 +250,51 @@ int main() {
 
 <!-- ===================== PROBLEM 4 ===================== -->
 <article id="p4">
-<h2>Problem 4: Valid Password</h2>
-<p class="tag">Strings | Loops | Manual character checks</p>
+<h2>Problem 4: Global String Editor</h2>
+<p class="tag">Functions | Global variables | Strings</p>
 
 <h3>Problem</h3>
-<p>A password is <b>valid</b> if it satisfies all of the following:</p>
+<p>A text editor stores a string <code>s</code> in a global variable. Initially, <code>s</code> is an empty string. You must process <i>n</i> operations in order. Each operation is one of the following:</p>
 <ul>
-<li>its length is at least 8 characters;</li>
-<li>it contains at least one uppercase English letter (<code>A</code>-<code>Z</code>);</li>
-<li>it contains at least one lowercase English letter (<code>a</code>-<code>z</code>);</li>
-<li>it contains at least one digit (<code>0</code>-<code>9</code>).</li>
+<li><b>Append</b> (<code>1 c</code>): append character <code>c</code> to the end of <code>s</code>.</li>
+<li><b>Replace</b> (<code>2 x y</code>): replace every occurrence of character <code>x</code> in <code>s</code> with character <code>y</code>.</li>
 </ul>
-<p>Other characters (such as symbols) are allowed and count only towards the length.</p>
+<p>Implement the two functions below. Each function must modify the global variable <code>s</code> directly.</p>
 
-<h3>Function to implement</h3>
-<div class="code"><pre>bool isValidPassword(string password);</pre></div>
-<p>Return <code>true</code> if the password is valid, <code>false</code> otherwise. Check each character yourself by comparing it with character ranges.</p>
+<h3>Functions to implement</h3>
+<div class="code"><pre>void appendCharacter(char c);
+void replaceCharacter(char oldChar, char newChar);</pre></div>
+<p>The functions do not return a value. Do not declare another local string to replace the global variable.</p>
 
 <h3>Input</h3>
-<p>A single string <code>password</code> with no spaces.</p>
+<ul>
+<li>The first line contains an integer <i>n</i>, the number of operations.</li>
+<li>Each of the next <i>n</i> lines describes one operation: <code>1 c</code> or <code>2 x y</code>.</li>
+</ul>
 <h3>Output</h3>
-<p>Print <code>VALID</code> if the password is valid, otherwise <code>INVALID</code>.</p>
+<p>Print the final string <code>s</code> after all operations. If <code>s</code> is empty, print an empty line.</p>
 
 <h3>Constraints</h3>
-<ul><li>1 &lt;= length of <code>password</code> &lt;= 100, printable ASCII characters, no spaces.</li></ul>
+<ul>
+<li>1 &lt;= <i>n</i> &lt;= 1000</li>
+<li><code>c</code>, <code>x</code>, and <code>y</code> are lowercase English letters (<code>a</code>-<code>z</code>).</li>
+</ul>
 
-<h3>Examples</h3>
-<div class="ex"><div><b>Input</b><div class="code"><pre>Hello123</pre></div></div><div><b>Output</b><div class="code"><pre>VALID</pre></div></div></div>
-<div class="ex"><div><b>Input</b><div class="code"><pre>hello123</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
-<div class="ex"><div><b>Input</b><div class="code"><pre>Ab1</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
+<h3>Example</h3>
+<div class="ex"><div><b>Input</b><div class="code"><pre>6
+1 a
+1 b
+1 a
+2 a c
+1 d
+2 b e</pre></div></div><div><b>Output</b><div class="code"><pre>cecd</pre></div></div></div>
+<p class="note">The string changes as follows: <code>a</code> → <code>ab</code> → <code>aba</code> → <code>cbc</code> → <code>cbcd</code> → <code>cecd</code>.</p>
 
 <h3>Requirements</h3>
 <ul>
-<li>The return type must be <code>bool</code>.</li>
-<li>Do not use <code>isupper()</code>, <code>islower()</code>, <code>isdigit()</code>, or any other built-in character-classification function.</li>
-<li>Do not print anything inside the function.</li>
+<li>Declare the global variable <code>string s = "";</code> as shown in the provided code.</li>
+<li>Both functions must have return type <code>void</code>.</li>
+<li>Modify the global variable <code>s</code> directly.</li>
 <li>Do not modify <code>main()</code>.</li>
 </ul>
 
@@ -293,20 +303,36 @@ int main() {
 #include &lt;string&gt;
 using namespace std;
 
-bool isValidPassword(string password) {
+string s = "";
+
+void appendCharacter(char c) {
+    // Your code here
+}
+
+void replaceCharacter(char oldChar, char newChar) {
     // Your code here
 }
 
 int main() {
-    string password;
-    cin &gt;&gt; password;
+    int n;
+    cin &gt;&gt; n;
 
-    if (isValidPassword(password)) {
-        cout &lt;&lt; "VALID\n";
-    } else {
-        cout &lt;&lt; "INVALID\n";
+    for (int i = 0; i &lt; n; i++) {
+        int type;
+        cin &gt;&gt; type;
+
+        if (type == 1) {
+            char c;
+            cin &gt;&gt; c;
+            appendCharacter(c);
+        } else {
+            char x, y;
+            cin &gt;&gt; x &gt;&gt; y;
+            replaceCharacter(x, y);
+        }
     }
 
+    cout &lt;&lt; s &lt;&lt; '\n';
     return 0;
 }</pre></div>
 </article>
