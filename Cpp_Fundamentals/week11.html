@@ -304,17 +304,16 @@ void replaceCharacter(string&amp; s, char oldChar, char newChar);</pre></div>
 #include &lt;string&gt;
 using namespace std;
 
-string s = "";
-
-void appendCharacter(char c) {
+void appendCharacter(string& s, char c) {
     // Your code here
 }
 
-void replaceCharacter(char oldChar, char newChar) {
+void replaceCharacter(string& s, char oldChar, char newChar) {
     // Your code here
 }
 
 int main() {
+    string s = "";
     int n;
     cin &gt;&gt; n;
 
