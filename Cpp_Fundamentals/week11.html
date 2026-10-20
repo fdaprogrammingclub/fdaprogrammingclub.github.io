@@ -38,7 +38,7 @@ th,td{border:1px solid var(--line);padding:4px 12px;text-align:left}
 <main>
 <h1>C++ Fundamentals: Exercises</h1>
 <p class="sub">Five exercises. Every code block has a Copy button. Do not modify <code>main()</code>.</p>
-<nav><a href="#p1">1. Character Classifier</a><a href="#p2">2. Trapezoid Area</a><a href="#p3">3. Update Balance</a><a href="#p4">4. Global String Editor</a><a href="#p5">5. RSA Lite</a></nav>
+<nav><a href="#p1">1. Character Classifier</a><a href="#p2">2. Trapezoid Area</a><a href="#p3">3. Update Balance</a><a href="#p4">4. Global String Editor</a><a href="#p5">5. Valid Password</a></nav>
 
 <!-- ===================== PROBLEM 1 ===================== -->
 <article id="p1">
@@ -339,83 +339,58 @@ int main() {
 
 <!-- ===================== PROBLEM 5 ===================== -->
 <article id="p5">
-<h2>Problem 5: RSA Lite: Key Validation</h2>
-<p class="tag">Number theory | Primes | GCD</p>
+<h2>Problem 5: Valid Password</h2>
+<p class="tag">Strings | Loops | Manual character checks</p>
 
 <h3>Problem</h3>
-<p>RSA is a public-key cryptosystem based on number theory. In this exercise you validate a simplified RSA key.</p>
-<p>You are given integers <i>p</i>, <i>q</i>, <i>e</i>. The numbers <i>p</i> and <i>q</i> must both be prime. Define</p>
-<p class="formula"><i>n</i> = <i>p</i> * <i>q</i>, &nbsp;&nbsp; phi(<i>n</i>) = (<i>p</i> - 1)(<i>q</i> - 1)</p>
-<p>The key is <b>valid</b> if and only if all of the following hold:</p>
+<p>A password is <b>valid</b> if it satisfies all of the following:</p>
 <ul>
-<li><i>p</i> is prime and <i>q</i> is prime;</li>
-<li>1 &lt; <i>e</i> &lt; phi(<i>n</i>);</li>
-<li>gcd(<i>e</i>, phi(<i>n</i>)) = 1.</li>
+<li>its length is at least 8 characters;</li>
+<li>it contains at least one uppercase English letter (<code>A</code>-<code>Z</code>);</li>
+<li>it contains at least one lowercase English letter (<code>a</code>-<code>z</code>);</li>
+<li>it contains at least one digit (<code>0</code>-<code>9</code>).</li>
 </ul>
+<p>Other characters (such as symbols) are allowed and count only towards the length.</p>
 
-<h3>Functions to implement</h3>
-<div class="code"><pre>bool isPrime(long long n);
-bool isValidExponent(long long e, long long phi);</pre></div>
-<ul>
-<li><code>isPrime(n)</code> returns <code>true</code> if <code>n</code> is prime. Test divisors directly; do not use a sieve.</li>
-<li><code>isValidExponent(e, phi)</code> returns <code>true</code> if <code>1 &lt; e &lt; phi</code> and <code>gcd(e, phi) == 1</code>. Use <code>std::gcd()</code> from <code>&lt;numeric&gt;</code>.</li>
-</ul>
+<h3>Function to implement</h3>
+<div class="code"><pre>bool isValidPassword(string password);</pre></div>
+<p>Return <code>true</code> if the password is valid, <code>false</code> otherwise. Check each character yourself by comparing it with character ranges.</p>
 
 <h3>Input</h3>
-<p>One line with three integers <i>p</i>, <i>q</i>, <i>e</i> separated by spaces.</p>
+<p>A single string <code>password</code> with no spaces.</p>
 <h3>Output</h3>
-<p>Print <code>VALID</code> if the key is valid, otherwise <code>INVALID</code>.</p>
+<p>Print <code>VALID</code> if the password is valid, otherwise <code>INVALID</code>.</p>
 
 <h3>Constraints</h3>
-<ul>
-<li>2 &lt;= <i>p</i>, <i>q</i> &lt;= 10^6 (not guaranteed to be prime)</li>
-<li>1 &lt;= <i>e</i> &lt;= 10^12</li>
-</ul>
+<ul><li>1 &lt;= length of <code>password</code> &lt;= 100, printable ASCII characters, no spaces.</li></ul>
 
 <h3>Examples</h3>
-<div class="ex"><div><b>Input</b><div class="code"><pre>5 11 3</pre></div></div><div><b>Output</b><div class="code"><pre>VALID</pre></div></div></div>
-<p class="note">phi(<i>n</i>) = 4 * 10 = 40. Since 1 &lt; 3 &lt; 40 and gcd(3, 40) = 1, the exponent is valid.</p>
-<div class="ex"><div><b>Input</b><div class="code"><pre>5 11 10</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
-<p class="note">gcd(10, 40) = 10 != 1.</p>
-<div class="ex"><div><b>Input</b><div class="code"><pre>7 13 72</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
-<p class="note">phi(<i>n</i>) = 6 * 12 = 72, and <i>e</i> must be strictly less than 72.</p>
-<div class="ex"><div><b>Input</b><div class="code"><pre>8 11 3</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
-<p class="note">8 is not prime.</p>
+<div class="ex"><div><b>Input</b><div class="code"><pre>Hello123</pre></div></div><div><b>Output</b><div class="code"><pre>VALID</pre></div></div></div>
+<div class="ex"><div><b>Input</b><div class="code"><pre>hello123</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
+<div class="ex"><div><b>Input</b><div class="code"><pre>Ab1</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
 
 <h3>Requirements</h3>
 <ul>
-<li>Implement both <code>isPrime()</code> and <code>isValidExponent()</code>.</li>
-<li>Use <code>gcd()</code> from <code>&lt;numeric&gt;</code>; do not write your own GCD.</li>
-<li>Do not use a prime sieve.</li>
-<li>Do not print anything inside the functions.</li>
+<li>The return type must be <code>bool</code>.</li>
+<li>Do not use <code>isupper()</code>, <code>islower()</code>, <code>isdigit()</code>, or any other built-in character-classification function.</li>
+<li>Do not print anything inside the function.</li>
 <li>Do not modify <code>main()</code>.</li>
 </ul>
 
 <h3>Provided code</h3>
 <div class="code"><pre>#include &lt;iostream&gt;
-#include &lt;numeric&gt;
+#include &lt;string&gt;
 using namespace std;
 
-bool isPrime(long long n) {
-    // Your code here
-}
-
-bool isValidExponent(long long e, long long phi) {
+bool isValidPassword(string password) {
     // Your code here
 }
 
 int main() {
-    long long p, q, e;
-    cin &gt;&gt; p &gt;&gt; q &gt;&gt; e;
+    string password;
+    cin &gt;&gt; password;
 
-    if (!isPrime(p) || !isPrime(q)) {
-        cout &lt;&lt; "INVALID\n";
-        return 0;
-    }
-
-    long long phi = (p - 1) * (q - 1);
-
-    if (isValidExponent(e, phi)) {
+    if (isValidPassword(password)) {
         cout &lt;&lt; "VALID\n";
     } else {
         cout &lt;&lt; "INVALID\n";
@@ -423,13 +398,6 @@ int main() {
 
     return 0;
 }</pre></div>
-
-<h3>Notes</h3>
-<ul>
-<li>Compile with C++17 or later to use <code>std::gcd()</code>.</li>
-<li>Use <code>long long</code> for all computations involving phi(<i>n</i>); it can reach about 10^12.</li>
-<li>In <code>isPrime()</code>, try divisors <code>i</code> from 2 while <code>i * i &lt;= n</code>. Remember that numbers less than 2 are not prime.</li>
-</ul>
 </article>
 </main>
 
