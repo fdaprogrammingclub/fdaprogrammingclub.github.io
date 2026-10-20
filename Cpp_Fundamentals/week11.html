@@ -38,7 +38,7 @@ th,td{border:1px solid var(--line);padding:4px 12px;text-align:left}
 <main>
 <h1>C++ Fundamentals: Exercises</h1>
 <p class="sub">Five exercises. Every code block has a Copy button. Do not modify <code>main()</code>.</p>
-<nav><a href="#p1">1. Character Classifier</a><a href="#p2">2. Trapezoid Area</a><a href="#p3">3. Update Balance</a><a href="#p4">4. Global String Editor</a><a href="#p5">5. Valid Password</a></nav>
+<nav><a href="#p1">1. Character Classifier</a><a href="#p2">2. Trapezoid Area</a><a href="#p3">3. Update Balance</a><a href="#p4">4. String Editor with Reference Parameters</a><a href="#p5">5. RSA Lite</a></nav>
 
 <!-- ===================== PROBLEM 1 ===================== -->
 <article id="p1">
@@ -154,10 +154,10 @@ int main() {
 <!-- ===================== PROBLEM 3 ===================== -->
 <article id="p3">
 <h2>Problem 3: Update Balance</h2>
-<p class="tag">Functions | Global variables | Rounding</p>
+<p class="tag">Functions | Local variables | Pass by reference | Rounding</p>
 
 <h3>Problem</h3>
-<p>A bank account uses VND. Its balance is stored in the global variable <code>balance</code> (type <code>long long</code>) and is initially <code>0</code>.</p>
+<p>A bank account uses VND. Its balance is stored in a variable <code>balance</code> (type <code>long long</code>), initially equal to <code>0</code>. The variable must be declared locally in <code>main()</code>, not as a global variable.</p>
 <p>The user performs <i>T</i> operations in order. Each operation is one of:</p>
 <ul>
 <li><b>Deposit</b> (<code>1 x y</code>): deposit <i>x</i> USD at an exchange rate of <i>y</i> VND/USD. The balance increases by <i>x</i> * <i>y</i> VND, rounded to the nearest VND.</li>
@@ -170,9 +170,9 @@ int main() {
 <p>After every operation, <code>main()</code> prints the current balance. For a failed withdrawal, the message <code>Insufficient balance!</code> therefore appears on the line <em>before</em> the balance line.</p>
 
 <h3>Functions to implement</h3>
-<div class="code"><pre>void update(double x, double y);
-void withdraw(long long z);</pre></div>
-<p>Do not redeclare <code>balance</code>. You may add <code>#include &lt;cmath&gt;</code> if you need a rounding function.</p>
+<div class="code"><pre>void update(long long&amp; balance, double x, double y);
+void withdraw(long long&amp; balance, long long z);</pre></div>
+<p>Both functions receive <code>balance</code> by reference, allowing them to modify the original variable. You may add <code>#include &lt;cmath&gt;</code> if you need a rounding function.</p>
 
 <h3>Input</h3>
 <ul>
@@ -205,25 +205,26 @@ Balance: 1540000 VND</pre></div></div></div>
 
 <h3>Requirements</h3>
 <ul>
-<li>Do not modify <code>main()</code> and do not redeclare <code>balance</code>.</li>
+<li>Declare <code>balance</code> as a local variable in <code>main()</code>, initialized to <code>0</code>. Do not use a global variable to store the balance.</li>
+<li>Pass <code>balance</code> by reference to both functions.</li>
 <li>Only <code>withdraw()</code> prints the failure message; <code>update()</code> prints nothing.</li>
+<li>Do not modify the function names or parameter types.</li>
 </ul>
 
 <h3>Provided code</h3>
 <div class="code"><pre>#include &lt;iostream&gt;
 using namespace std;
 
-long long balance = 0;
-
-void update(double x, double y) {
+void update(long long& balance, double x, double y) {
     // TODO
 }
 
-void withdraw(long long z) {
+void withdraw(long long& balance, long long z) {
     // TODO
 }
 
 int main() {
+    long long balance = 0;
     int T;
     cin &gt;&gt; T;
 
@@ -234,11 +235,11 @@ int main() {
         if (type == 1) {
             double x, y;
             cin &gt;&gt; x &gt;&gt; y;
-            update(x, y);
+            update(balance, x, y);
         } else if (type == 2) {
             long long z;
             cin &gt;&gt; z;
-            withdraw(z);
+            withdraw(balance, z);
         }
 
         cout &lt;&lt; "Balance: " &lt;&lt; balance &lt;&lt; " VND" &lt;&lt; endl;
@@ -250,21 +251,21 @@ int main() {
 
 <!-- ===================== PROBLEM 4 ===================== -->
 <article id="p4">
-<h2>Problem 4: Global String Editor</h2>
-<p class="tag">Functions | Global variables | Strings</p>
+<h2>Problem 4: String Editor with Reference Parameters</h2>
+<p class="tag">Functions | Local variables | Pass by reference | Strings</p>
 
 <h3>Problem</h3>
-<p>A text editor stores a string <code>s</code> in a global variable. Initially, <code>s</code> is an empty string. You must process <i>n</i> operations in order. Each operation is one of the following:</p>
+<p>A text editor stores a string <code>s</code>, initially empty. The string must be declared as a local variable in <code>main()</code>, not as a global variable. You must process <i>n</i> operations in order. Each operation is one of the following:</p>
 <ul>
 <li><b>Append</b> (<code>1 c</code>): append character <code>c</code> to the end of <code>s</code>.</li>
 <li><b>Replace</b> (<code>2 x y</code>): replace every occurrence of character <code>x</code> in <code>s</code> with character <code>y</code>.</li>
 </ul>
-<p>Implement the two functions below. Each function must modify the global variable <code>s</code> directly.</p>
+<p>Implement the two functions below. Each function receives <code>s</code> by reference so that it can modify the original string.</p>
 
 <h3>Functions to implement</h3>
-<div class="code"><pre>void appendCharacter(char c);
-void replaceCharacter(char oldChar, char newChar);</pre></div>
-<p>The functions do not return a value. Do not declare another local string to replace the global variable.</p>
+<div class="code"><pre>void appendCharacter(string&amp; s, char c);
+void replaceCharacter(string&amp; s, char oldChar, char newChar);</pre></div>
+<p>The functions do not return a value. The string must be passed by reference, not copied.</p>
 
 <h3>Input</h3>
 <ul>
@@ -292,10 +293,10 @@ void replaceCharacter(char oldChar, char newChar);</pre></div>
 
 <h3>Requirements</h3>
 <ul>
-<li>Declare the global variable <code>string s = "";</code> as shown in the provided code.</li>
+<li>Declare <code>string s = "";</code> as a local variable in <code>main()</code>. Do not use a global variable to store the string.</li>
+<li>Pass <code>s</code> by reference to both functions.</li>
 <li>Both functions must have return type <code>void</code>.</li>
-<li>Modify the global variable <code>s</code> directly.</li>
-<li>Do not modify <code>main()</code>.</li>
+<li>Do not modify the function names or parameter types.</li>
 </ul>
 
 <h3>Provided code</h3>
@@ -324,11 +325,11 @@ int main() {
         if (type == 1) {
             char c;
             cin &gt;&gt; c;
-            appendCharacter(c);
+            appendCharacter(s, c);
         } else {
             char x, y;
             cin &gt;&gt; x &gt;&gt; y;
-            replaceCharacter(x, y);
+            replaceCharacter(s, x, y);
         }
     }
 
@@ -339,58 +340,83 @@ int main() {
 
 <!-- ===================== PROBLEM 5 ===================== -->
 <article id="p5">
-<h2>Problem 5: Valid Password</h2>
-<p class="tag">Strings | Loops | Manual character checks</p>
+<h2>Problem 5: RSA Lite: Key Validation</h2>
+<p class="tag">Number theory | Primes | GCD</p>
 
 <h3>Problem</h3>
-<p>A password is <b>valid</b> if it satisfies all of the following:</p>
+<p>RSA is a public-key cryptosystem based on number theory. In this exercise you validate a simplified RSA key.</p>
+<p>You are given integers <i>p</i>, <i>q</i>, <i>e</i>. The numbers <i>p</i> and <i>q</i> must both be prime. Define</p>
+<p class="formula"><i>n</i> = <i>p</i> * <i>q</i>, &nbsp;&nbsp; phi(<i>n</i>) = (<i>p</i> - 1)(<i>q</i> - 1)</p>
+<p>The key is <b>valid</b> if and only if all of the following hold:</p>
 <ul>
-<li>its length is at least 8 characters;</li>
-<li>it contains at least one uppercase English letter (<code>A</code>-<code>Z</code>);</li>
-<li>it contains at least one lowercase English letter (<code>a</code>-<code>z</code>);</li>
-<li>it contains at least one digit (<code>0</code>-<code>9</code>).</li>
+<li><i>p</i> is prime and <i>q</i> is prime;</li>
+<li>1 &lt; <i>e</i> &lt; phi(<i>n</i>);</li>
+<li>gcd(<i>e</i>, phi(<i>n</i>)) = 1.</li>
 </ul>
-<p>Other characters (such as symbols) are allowed and count only towards the length.</p>
 
-<h3>Function to implement</h3>
-<div class="code"><pre>bool isValidPassword(string password);</pre></div>
-<p>Return <code>true</code> if the password is valid, <code>false</code> otherwise. Check each character yourself by comparing it with character ranges.</p>
+<h3>Functions to implement</h3>
+<div class="code"><pre>bool isPrime(long long n);
+bool isValidExponent(long long e, long long phi);</pre></div>
+<ul>
+<li><code>isPrime(n)</code> returns <code>true</code> if <code>n</code> is prime. Test divisors directly; do not use a sieve.</li>
+<li><code>isValidExponent(e, phi)</code> returns <code>true</code> if <code>1 &lt; e &lt; phi</code> and <code>gcd(e, phi) == 1</code>. Use <code>std::gcd()</code> from <code>&lt;numeric&gt;</code>.</li>
+</ul>
 
 <h3>Input</h3>
-<p>A single string <code>password</code> with no spaces.</p>
+<p>One line with three integers <i>p</i>, <i>q</i>, <i>e</i> separated by spaces.</p>
 <h3>Output</h3>
-<p>Print <code>VALID</code> if the password is valid, otherwise <code>INVALID</code>.</p>
+<p>Print <code>VALID</code> if the key is valid, otherwise <code>INVALID</code>.</p>
 
 <h3>Constraints</h3>
-<ul><li>1 &lt;= length of <code>password</code> &lt;= 100, printable ASCII characters, no spaces.</li></ul>
+<ul>
+<li>2 &lt;= <i>p</i>, <i>q</i> &lt;= 10^6 (not guaranteed to be prime)</li>
+<li>1 &lt;= <i>e</i> &lt;= 10^12</li>
+</ul>
 
 <h3>Examples</h3>
-<div class="ex"><div><b>Input</b><div class="code"><pre>Hello123</pre></div></div><div><b>Output</b><div class="code"><pre>VALID</pre></div></div></div>
-<div class="ex"><div><b>Input</b><div class="code"><pre>hello123</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
-<div class="ex"><div><b>Input</b><div class="code"><pre>Ab1</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
+<div class="ex"><div><b>Input</b><div class="code"><pre>5 11 3</pre></div></div><div><b>Output</b><div class="code"><pre>VALID</pre></div></div></div>
+<p class="note">phi(<i>n</i>) = 4 * 10 = 40. Since 1 &lt; 3 &lt; 40 and gcd(3, 40) = 1, the exponent is valid.</p>
+<div class="ex"><div><b>Input</b><div class="code"><pre>5 11 10</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
+<p class="note">gcd(10, 40) = 10 != 1.</p>
+<div class="ex"><div><b>Input</b><div class="code"><pre>7 13 72</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
+<p class="note">phi(<i>n</i>) = 6 * 12 = 72, and <i>e</i> must be strictly less than 72.</p>
+<div class="ex"><div><b>Input</b><div class="code"><pre>8 11 3</pre></div></div><div><b>Output</b><div class="code"><pre>INVALID</pre></div></div></div>
+<p class="note">8 is not prime.</p>
 
 <h3>Requirements</h3>
 <ul>
-<li>The return type must be <code>bool</code>.</li>
-<li>Do not use <code>isupper()</code>, <code>islower()</code>, <code>isdigit()</code>, or any other built-in character-classification function.</li>
-<li>Do not print anything inside the function.</li>
+<li>Implement both <code>isPrime()</code> and <code>isValidExponent()</code>.</li>
+<li>Use <code>gcd()</code> from <code>&lt;numeric&gt;</code>; do not write your own GCD.</li>
+<li>Do not use a prime sieve.</li>
+<li>Do not print anything inside the functions.</li>
 <li>Do not modify <code>main()</code>.</li>
 </ul>
 
 <h3>Provided code</h3>
 <div class="code"><pre>#include &lt;iostream&gt;
-#include &lt;string&gt;
+#include &lt;numeric&gt;
 using namespace std;
 
-bool isValidPassword(string password) {
+bool isPrime(long long n) {
+    // Your code here
+}
+
+bool isValidExponent(long long e, long long phi) {
     // Your code here
 }
 
 int main() {
-    string password;
-    cin &gt;&gt; password;
+    long long p, q, e;
+    cin &gt;&gt; p &gt;&gt; q &gt;&gt; e;
 
-    if (isValidPassword(password)) {
+    if (!isPrime(p) || !isPrime(q)) {
+        cout &lt;&lt; "INVALID\n";
+        return 0;
+    }
+
+    long long phi = (p - 1) * (q - 1);
+
+    if (isValidExponent(e, phi)) {
         cout &lt;&lt; "VALID\n";
     } else {
         cout &lt;&lt; "INVALID\n";
@@ -398,6 +424,13 @@ int main() {
 
     return 0;
 }</pre></div>
+
+<h3>Notes</h3>
+<ul>
+<li>Compile with C++17 or later to use <code>std::gcd()</code>.</li>
+<li>Use <code>long long</code> for all computations involving phi(<i>n</i>); it can reach about 10^12.</li>
+<li>In <code>isPrime()</code>, try divisors <code>i</code> from 2 while <code>i * i &lt;= n</code>. Remember that numbers less than 2 are not prime.</li>
+</ul>
 </article>
 </main>
 
